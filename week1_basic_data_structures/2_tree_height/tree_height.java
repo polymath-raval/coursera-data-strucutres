@@ -34,6 +34,33 @@ public class tree_height {
 		}
 
 		int computeHeight() {
+            // Replace this code with a faster implementation
+			//System.out.println(n);
+			//System.out.println(Arrays.toString(parent));
+			List<Integer>[] tree = (ArrayList<Integer>[])new ArrayList[n];
+			for(int i = 0; i < tree.length; i++)
+				tree[i] = new ArrayList<>();
+			int root = -1;
+			for(int i = 0; i < parent.length; i++) {
+
+				if(parent[i] == -1) 
+					root = i;
+				else
+					tree[parent[i]].add(i);
+			}
+
+			return height(tree, root);
+		}
+
+		int height(List<Integer>[] tree, int node) {
+			int maxHeight = 0;
+			for(int child : tree[node]) {
+				maxHeight = Integer.max(maxHeight, height(tree, child));
+			}
+			return 1 + maxHeight;
+		}
+
+		int computeHeight1() {
                         // Replace this code with a faster implementation
 			int maxHeight = 0;
 			for (int vertex = 0; vertex < n; vertex++) {

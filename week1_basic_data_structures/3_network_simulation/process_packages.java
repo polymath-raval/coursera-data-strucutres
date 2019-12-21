@@ -23,6 +23,7 @@ class Response {
 }
 
 class Buffer {
+
     public Buffer(int size) {
         this.size_ = size;
         this.finish_time_ = new ArrayList<Integer>();
@@ -30,7 +31,18 @@ class Buffer {
 
     public Response Process(Request request) {
         // write your code here
-        return new Response(false, -1);
+        boolean isProcessed = this.finish_time_.size() < this.size_ || 
+                request.arrival_time >= this.finish_time_.get(this.finish_time_.size() - this.size_);
+        if(isProcessed) {
+            int last_finished_time = this.finish_time_.isEmpty() ? 
+                    0 : this.finish_time_.get(this.finish_time_.size() - 1);
+            int process_start_time = Integer.max(last_finished_time, request.arrival_time);
+            int process_finish_time = process_start_time + request.process_time;
+            this.finish_time_.add(process_finish_time);
+            return new Response(false, process_start_time);
+        } else {
+            return new Response(true, -1);
+        }
     }
 
     private int size_;
