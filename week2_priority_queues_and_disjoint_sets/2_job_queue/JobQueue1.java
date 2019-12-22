@@ -78,7 +78,7 @@ public class JobQueue1 {
     }
 
     public static void main(String[] args) throws IOException {
-        new JobQueue().solve();
+        new JobQueue1().solve();
     }
 
     private void writeResponse(Processor[] assignedJobs) throws IOException {
