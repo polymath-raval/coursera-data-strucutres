@@ -48,6 +48,4 @@ if __name__ == '__main__':
     input_sequence = [int(i) for i in input().split()]
     assert len(input_sequence) == n
     window_size = int(input())
-
     print(*max_sliding_window_dp(input_sequence, window_size))
-
