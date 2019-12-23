@@ -1,7 +1,7 @@
 # python3
 
 PRIME = 1000000007
-X = 263
+X = 1
 
 def read_input():
     return (input().rstrip(), input().rstrip())
@@ -31,18 +31,16 @@ def hash_code_permutation_naive(s, l, x, p):
 def hash_code_permutation_optimized(s, l, x, p):
     len_result =  len(s) - l + 1
     hash_code = [0] * (len_result)
-    hash_str = [''] * (len_result)
-    hash_str[len_result - 1] = s[len_result - 1 : len(s)]
     hash_code[len_result - 1] = hash_code_single_string(s[len_result - 1 : len(s)], x, p)
     exponent_x = (x ** l)
+    s_list = list(s)
     for i in range(len_result - 2, -1, -1):
-        hash_str[i] = s[i : i + l]
         hash_code[i] = (
             (hash_code[i + 1] * x) % p
-            + ord(s[i : i + 1]) % p
-            - (ord(s[i + l : i + l + 1]) * exponent_x % p ) 
+            + ord(s_list[i]) % p
+            - (ord(s_list[i + l]) * exponent_x % p ) 
         ) % p
-    return (hash_str, hash_code)
+    return hash_code
 
 
 def get_occurrences(pattern, text):
@@ -50,10 +48,10 @@ def get_occurrences(pattern, text):
     prime = PRIME
     hash_p = hash_code_single_string(pattern, x, prime)
     result = []
-    (hash_s, hash_c) = hash_code_permutation_optimized(text, len(pattern), x, prime)
-    for idx in range(len(hash_s)):
+    hash_c = hash_code_permutation_optimized(text, len(pattern), x, prime)
+    for idx in range(len(hash_c)):
         if hash_c[idx] == hash_p:
-            if hash_s[idx] == pattern:
+            if text[idx : idx + len(pattern)] == pattern:
                 result.append(idx)
     return result
 
