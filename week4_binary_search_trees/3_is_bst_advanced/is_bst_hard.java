@@ -2,6 +2,12 @@ import java.util.*;
 import java.io.*;
 
 public class is_bst_hard {
+    private static class InvalidTreeException extends Exception {
+        InvalidTreeException(String msg) {
+            super(msg);
+        }
+    }
+
     class FastScanner {
         StringTokenizer tok = new StringTokenizer("");
         BufferedReader in;
@@ -46,8 +52,32 @@ public class is_bst_hard {
         }
 
         boolean isBinarySearchTree() {
-          // Implement correct algorithm here
-          return true;
+            if(tree == null || tree.length == 0)
+                return true;
+            List<Integer> result = new ArrayList<>();
+            try {
+                inOrderTraversal(0, result, new HashSet<Integer>());
+            } catch(InvalidTreeException e) {
+                return false;
+            }
+            for(int i = 1; i < result.size(); i++) {
+                if(result.get(i - 1) > result.get(i))
+                    return false;
+            }
+            return true;
+        }
+
+        void inOrderTraversal(int root, List<Integer> result, Set<Integer> leftTurns) throws InvalidTreeException {
+            if(root == -1)
+                return;
+            if(leftTurns.contains(tree[root].key))
+                throw new InvalidTreeException("");
+            
+            leftTurns.add(tree[root].key);
+            inOrderTraversal(tree[root].left, result, leftTurns);
+            leftTurns.remove(tree[root].key);
+            result.add(tree[root].key);
+            inOrderTraversal(tree[root].right, result, leftTurns);
         }
     }
 
@@ -64,7 +94,7 @@ public class is_bst_hard {
     public void run() throws IOException {
         IsBST tree = new IsBST();
         tree.read();
-        if (tree.solve()) {
+        if (tree.isBinarySearchTree()) {
             System.out.println("CORRECT");
         } else {
             System.out.println("INCORRECT");
