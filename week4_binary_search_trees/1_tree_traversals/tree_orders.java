@@ -31,6 +31,7 @@ public class tree_orders {
 			key = new int[n];
 			left = new int[n];
 			right = new int[n];
+
 			for (int i = 0; i < n; i++) { 
 				key[i] = in.nextInt();
 				left[i] = in.nextInt();
@@ -38,28 +39,52 @@ public class tree_orders {
 			}
 		}
 
+		void print() {
+			System.out.println(Arrays.toString(key));
+			System.out.println(Arrays.toString(left));
+			System.out.println(Arrays.toString(right));
+		}
+
 		List<Integer> inOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
-                        
+            inOrder(0, result);    
 			return result;
+		}
+
+		private void inOrder(int root, ArrayList<Integer> result) {
+			if(root == -1)
+				return;
+			inOrder(left[root], result);
+			result.add(key[root]);
+			inOrder(right[root], result);
 		}
 
 		List<Integer> preOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
-                        
+			preOrder(0, result);
 			return result;
+		}
+
+		private void preOrder(int root, ArrayList<Integer> result) {
+			if(root == -1)
+				return;
+			result.add(key[root]);
+			preOrder(left[root], result);
+			preOrder(right[root], result);
 		}
 
 		List<Integer> postOrder() {
 			ArrayList<Integer> result = new ArrayList<Integer>();
-                        // Finish the implementation
-                        // You may need to add a new recursive method to do that
-                        
+            postOrder(0, result);
 			return result;
+		}
+
+		private void postOrder(int root, ArrayList<Integer> result) {
+			if(root == -1)
+				return;
+			postOrder(left[root], result);
+			postOrder(right[root], result);
+			result.add(key[root]);
 		}
 	}
 
